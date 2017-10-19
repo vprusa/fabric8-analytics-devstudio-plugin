@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fabricate8analysis UI Tests
+Bundle-SymbolicName: com.redhat.fabric8analytics.lsp.eclipse.reddeer;singleton:=true
+Bundle-Version: 4.4.100.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: JBoss by Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.0.0",
+ org.junit;bundle-version="4.8.2",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.3.0,3.4.0)"
+Import-Package: org.eclipse.reddeer.requirements.server,
+ org.eclipse.wst.server.ui.internal.view.servers,
+ org.jboss.tools.examples.ui.bot.test.integration,
+ org.jboss.tools.maven.reddeer.requirement
