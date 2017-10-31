@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.redhat.fabric8analytics.integration-tests</groupId>
@@ -9,129 +8,53 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.redhat.fabric8analytics.lsp.eclipse.reddeer</groupId>
-	<artifactId>com.redhat.fabric8analytics.lsp.eclipse.reddeer </artifactId>
+	<artifactId>com.redhat.fabric8analytics.lsp.eclipse.reddeer</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+		<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.SmokeSuite</test.class>
+		<test.suite>com.redhat.fabric8analytics.lsp.eclipse.reddeer</test.suite>
 	</properties>
-	<build>
-	<resources>
-		<resource>
-			<directory>resources</directory>
-			<includes>
-				<include>**</include>
-			</includes>
-			<filtering>true</filtering>
-		</resource>
-	</resources>
-	<pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<testSuite>com.redhat.fabric8analytics.lsp.eclipse.reddeer</testSuite>
-					<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.common.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-		</plugins>
-	</pluginManagement>
-</build>
+
 	<profiles>
 		<profile>
-			<id>WildFly10</id>
-			<activation>
-        		<activeByDefault>true</activeByDefault>
-   			</activation>
+			<id>SmokeSuite</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.json</reddeer.config>
-				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
-				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
+				<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.SmokeSuite</test.class>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>download-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>download-examples-wildfly</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>${quickstartsURLWildFly}</url>
-									<unpack>true</unpack>
-									<outputDirectory>${project.build.directory}</outputDirectory>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>download-wildfly</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>unpack</goal>
-								</goals>
-								<configuration>
-									<artifactItems>
-										<artifactItem>
-											<groupId>org.wildfly</groupId>
-											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
-											<type>zip</type>
-										</artifactItem>
-									</artifactItems>
-									<skip>${skipTests}</skip>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
+						<artifactId>target-platform-configuration</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${test.class}</testClass>
+							<testSuite>${test.suite}</testSuite>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
-
-	<repositories>
-		<repository>
-			<id>m2e-connector-</id>
-			<url>http://ianbrandt.github.io/m2e-maven-dependency-plugin/0.0.4/</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
+	<build>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testClass>${test.class}</testClass>
+					<testSuite>${test.suite}</testSuite>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

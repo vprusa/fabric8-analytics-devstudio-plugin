@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fabricate8analysis UI Tests
 Bundle-SymbolicName: com.redhat.fabric8analytics.lsp.eclipse.reddeer;singleton:=true
-Bundle-Version: 4.4.100.qualifier
+Bundle-Version: 0.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
