@@ -149,13 +149,13 @@ public class StackAnalysisTest {
 
 	@Test
 	public void openStackAnalysis() {
-		log.info("Validating ContextMenu item StackAnalysis");
+		log.info("Validating ContextMenu item StackAnalyses");
 
 		DefaultProject project = getProject();
 		project.select();
 		
 		ContextMenu contextMenu = new ContextMenu();
-		contextMenu.getItem("Stack Analysis").select();
+		contextMenu.getItem("Stack Analyses").select();
 		log.info("Validating that shell opened");
 		//DefaultShell stackAnalysisShell = new DefaultShell(new RegexMatcher(".*OpenShift\\.io.*")); 
 		DefaultShell stackAnalysisShell = new DefaultShell();
