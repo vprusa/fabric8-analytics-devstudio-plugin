@@ -157,11 +157,13 @@ public class StackAnalysisTest {
 		ContextMenu contextMenu = new ContextMenu();
 		contextMenu.getItem("Stack Analyses").select();
 		log.info("Validating that shell opened");
-		//DefaultShell stackAnalysisShell = new DefaultShell(new RegexMatcher(".*OpenShift\\.io.*")); 
-		DefaultShell stackAnalysisShell = new DefaultShell();
-		stackAnalysisShell.maximize();
-		log.info("stackAnalysisShell.getText()");
-		log.info(stackAnalysisShell.getText());
+		//DefaultShell stackAnalysesShell = new DefaultShell(new RegexMatcher(".*OpenShift\\.io.*")); 
+		DefaultShell osLogin = new DefaultShell();
+		
+		DefaultShell stackAnalysesShell = new DefaultShell();
+		stackAnalysesShell.maximize();
+		log.info("stackAnalysesShell.getText()");
+		log.info(stackAnalysesShell.getText());
 		
 		 
 		new WaitUntil(new JobIsRunning(), TimePeriod.LONG);

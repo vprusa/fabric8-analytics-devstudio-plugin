@@ -12,8 +12,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.SmokeSuite</test.class>
 		<test.suite>com.redhat.fabric8analytics.lsp.eclipse.reddeer</test.suite>
+		<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.SmokeSuite</test.class>
 	</properties>
 
 	<profiles>
@@ -28,6 +28,27 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>target-platform-configuration</artifactId>
 						<configuration>
+							<useUIThread>false</useUIThread>
+							<testClass>${test.class}</testClass>
+							<testSuite>${test.suite}</testSuite>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>HelloWorldSuite</id>
+
+			<properties>
+				<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.HelloWorldSuite</test.class>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<useUIThread>false</useUIThread>
 							<testClass>${test.class}</testClass>
 							<testSuite>${test.suite}</testSuite>
 						</configuration>
@@ -51,6 +72,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
+					<useUIThread>false</useUIThread>
 					<testClass>${test.class}</testClass>
 					<testSuite>${test.suite}</testSuite>
 				</configuration>
