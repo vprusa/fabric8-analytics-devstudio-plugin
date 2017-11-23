@@ -3,24 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.redhat.fabric8analytics.integration-tests</groupId>
+		<groupId>com.redhat.fabric8analytics.tests</groupId>
 		<artifactId>tests</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.redhat.fabric8analytics.lsp.eclipse.reddeer</groupId>
-	<artifactId>com.redhat.fabric8analytics.lsp.eclipse.reddeer</artifactId>
+	<groupId>com.redhat.fabric8analytics.lsp.eclipse.ui.tests</groupId>
+	<artifactId>com.redhat.fabric8analytics.lsp.eclipse.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<test.suite>com.redhat.fabric8analytics.lsp.eclipse.reddeer</test.suite>
-		<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.HelloWorldSuite</test.class>
+		<test.suite>com.redhat.fabric8analytics.lsp.eclipse.ui.tests</test.suite>
+		<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.tests.SmokeSuite</test.class>
 	</properties>
 
 	<profiles>
 		<profile>
 			<id>SmokeSuite</id>
 			<properties>
-				<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.SmokeSuite</test.class>
+				<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.tests.SmokeSuite</test.class>
 			</properties>
 			<build>
 				<plugins>
@@ -40,7 +40,7 @@
 			<id>HelloWorldSuite</id>
 
 			<properties>
-				<test.class>com.redhat.fabric8analytics.lsp.eclipse.reddeer.HelloWorldSuite</test.class>
+				<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.tests.HelloWorldSuite</test.class>
 			</properties>
 			<build>
 				<plugins>
