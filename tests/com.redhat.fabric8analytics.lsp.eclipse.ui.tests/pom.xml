@@ -13,7 +13,7 @@
 
 	<properties>
 		<test.suite>com.redhat.fabric8analytics.lsp.eclipse.ui.tests</test.suite>
-		<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.tests.SmokeSuite</test.class>
+		<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.tests.HelloWorldSuite</test.class>
 	</properties>
 
 	<profiles>
