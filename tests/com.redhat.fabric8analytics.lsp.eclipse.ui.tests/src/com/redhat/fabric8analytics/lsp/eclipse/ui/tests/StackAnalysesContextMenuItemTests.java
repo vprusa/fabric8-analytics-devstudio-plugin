@@ -34,7 +34,9 @@ public class StackAnalysesContextMenuItemTests {
 		importDialog.open();
 		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
 		try {
-			importPage.setRootDirectory((new File(path).getCanonicalPath()));
+			String canonicalPath = new File(path).getCanonicalPath();
+			log.info("Canonical path to project: " + canonicalPath);
+			importPage.setRootDirectory(canonicalPath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
