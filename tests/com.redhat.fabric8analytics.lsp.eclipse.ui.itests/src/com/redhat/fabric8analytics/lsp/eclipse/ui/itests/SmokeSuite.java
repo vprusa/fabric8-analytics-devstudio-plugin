@@ -8,14 +8,14 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package com.redhat.fabric8analytics.lsp.eclipse.ui.tests;
+package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
-@SuiteClasses({ HelloWorld.class })
-public class HelloWorldSuite {
+@Suite.SuiteClasses({ StackAnalysesContextMenuItemTests.class })
+public class SmokeSuite {
 
 }

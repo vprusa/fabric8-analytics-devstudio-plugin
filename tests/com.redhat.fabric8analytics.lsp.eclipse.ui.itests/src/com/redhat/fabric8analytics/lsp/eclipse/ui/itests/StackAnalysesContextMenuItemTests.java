@@ -1,9 +1,10 @@
-package com.redhat.fabric8analytics.lsp.eclipse.ui.tests;
+package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
@@ -13,6 +14,8 @@ import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportP
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.TreeItem;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +38,7 @@ public class StackAnalysesContextMenuItemTests {
 		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
 		try {
 			String canonicalPath = new File(path).getCanonicalPath();
-			log.info("Canonical path to project: " + canonicalPath);
+			log.info("Canonical path to resoruce project: " + canonicalPath);
 			importPage.setRootDirectory(canonicalPath);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -56,48 +59,47 @@ public class StackAnalysesContextMenuItemTests {
 		return explorer.getProject(PROJECT_NAME);
 	}
 
-	public ContextMenu getContextMenuForProject() {
-		getProject().select();
+	public ContextMenu getContextMenuFor(String path) {
+		if (path.equals("/")) {
+			getProject().select();
+
+		} else {
+			getProject().getProjectItem(path).select();
+		}
 		return new ContextMenu();
-	}
-
-	public ContextMenu getContextMenuForProjectsPom() {
-		getProject().getProjectItem("pom.xml").select();
-		return new ContextMenu();
-	}
-
-	@Test
-	public void existsForMavenProjectTest() {
-		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is present for project '" + PROJECT_NAME + "'");
-		ContextMenu contextMenu = getContextMenuForProject();
-		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing", contextMenu.getItems().stream()
-				.filter(p -> p.getText().matches(CONTEXT_MENU_ITEM_TEXT)).findAny().isPresent());
-	}
-
-	@Test
-	public void enabledForMavenProjectTest() {
-		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is enabled for project '" + PROJECT_NAME + "'");
-		ContextMenu contextMenu = getContextMenuForProject();
-		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing",
-				contextMenu.getItem(CONTEXT_MENU_ITEM_TEXT).isEnabled());
 	}
 
 	@Test
 	public void existsForMavenProjectPomTest() {
-		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is present for root pom.xml file in project '"
-				+ PROJECT_NAME + "'");
-		ContextMenu contextMenu = getContextMenuForProjectsPom();
+		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is present for project '" + PROJECT_NAME + "'");
+		ContextMenu contextMenu = getContextMenuFor("/");
 		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing", contextMenu.getItems().stream()
 				.filter(p -> p.getText().matches(CONTEXT_MENU_ITEM_TEXT)).findAny().isPresent());
+		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is enabled for project '" + PROJECT_NAME + "'");
+		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing",
+				contextMenu.getItem(CONTEXT_MENU_ITEM_TEXT).isEnabled());
+
+		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is present for root pom.xml file in project '"
+				+ PROJECT_NAME + "'");
+		contextMenu = getContextMenuFor("pom.xml");
+		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing", contextMenu.getItems().stream()
+				.filter(p -> p.getText().matches(CONTEXT_MENU_ITEM_TEXT)).findAny().isPresent());
+		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is enabled for root pom.xml file in project '"
+				+ PROJECT_NAME + "'");
+		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing",
+				contextMenu.getItem(CONTEXT_MENU_ITEM_TEXT).isEnabled());
 	}
 
 	@Test
-	public void enabledForMavenProjectPomTest() {
-		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is enabled for root pom.xml file in project '"
-				+ PROJECT_NAME + "'");
-		ContextMenu contextMenu = getContextMenuForProjectsPom();
-		assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing",
-				contextMenu.getItem(CONTEXT_MENU_ITEM_TEXT).isEnabled());
+	public void notExistsForMavenProjectSrcTest() {
+		String[] paths = { "src" };
+		log.info("Validating that " + CONTEXT_MENU_ITEM_TEXT + " is not present for " + paths.toString()
+				+ " file in project '" + PROJECT_NAME + "'");
+		Arrays.stream(paths).forEach(path -> {
+			assertTrue("ContextMenu item '" + CONTEXT_MENU_ITEM_TEXT + "' is missing",
+					!getContextMenuFor(path).getItems().stream()
+							.filter(p -> p.getText().matches(CONTEXT_MENU_ITEM_TEXT)).findAny().isPresent());
+		});
 	}
 
 }

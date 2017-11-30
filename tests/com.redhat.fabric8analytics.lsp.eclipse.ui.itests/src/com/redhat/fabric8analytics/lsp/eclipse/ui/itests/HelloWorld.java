@@ -1,4 +1,4 @@
-package com.redhat.fabric8analytics.lsp.eclipse.ui.tests;
+package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
 import static org.junit.Assert.*;
 
