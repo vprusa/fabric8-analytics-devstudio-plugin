@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizardPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
@@ -33,9 +35,9 @@ public class StackAnalysesContextMenuItemTests {
 	public static void prepare() {
 		log.info("Import " + PROJECT_NAME);
 		String path = "resources/" + PROJECT_NAME;
-		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
+		MavenImportWizard importDialog = new MavenImportWizard();
 		importDialog.open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
+		MavenImportWizardPage importPage = new MavenImportWizardPage(importDialog);
 		try {
 			String canonicalPath = new File(path).getCanonicalPath();
 			log.info("Canonical path to resoruce project: " + canonicalPath);
@@ -43,13 +45,12 @@ public class StackAnalysesContextMenuItemTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		importPage.copyProjectsIntoWorkspace(true);
 		importDialog.finish();
 	}
 
 	@AfterClass
 	public static void clean() {
-		new ProjectExplorer().deleteAllProjects();
+		new ProjectExplorer().deleteAllProjects(false);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
