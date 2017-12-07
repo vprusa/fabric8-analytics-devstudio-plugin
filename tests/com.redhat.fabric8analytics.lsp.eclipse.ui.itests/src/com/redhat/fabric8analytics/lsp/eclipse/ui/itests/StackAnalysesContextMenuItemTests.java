@@ -32,19 +32,15 @@ public class StackAnalysesContextMenuItemTests {
 	private static final Logger log = Logger.getLogger(StackAnalysesContextMenuItemTests.class);
 
 	@BeforeClass
-	public static void prepare() {
+	public static void prepare() throws IOException {
 		log.info("Import " + PROJECT_NAME);
 		String path = "resources/" + PROJECT_NAME;
 		MavenImportWizard importDialog = new MavenImportWizard();
 		importDialog.open();
 		MavenImportWizardPage importPage = new MavenImportWizardPage(importDialog);
-		try {
-			String canonicalPath = new File(path).getCanonicalPath();
-			log.info("Canonical path to resoruce project: " + canonicalPath);
-			importPage.setRootDirectory(canonicalPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String canonicalPath = new File(path).getCanonicalPath();
+		log.info("Canonical path to resoruce project: " + canonicalPath);
+		importPage.setRootDirectory(canonicalPath);
 		importDialog.finish();
 	}
 

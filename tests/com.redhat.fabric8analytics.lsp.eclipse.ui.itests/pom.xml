@@ -36,26 +36,6 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>HelloWorldSuite</id>
-
-			<properties>
-				<test.class>com.redhat.fabric8analytics.lsp.eclipse.ui.itests.HelloWorldSuite</test.class>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<configuration>
-							<useUIThread>false</useUIThread>
-							<testClass>${test.class}</testClass>
-							<testSuite>${test.suite}</testSuite>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 	<build>
 		<resources>
