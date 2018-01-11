@@ -23,13 +23,21 @@
     <artifactId>jboss-parent</artifactId>
     <version>21</version>
   </parent>
-  <groupId>io.openshift.booster</groupId>
-  <artifactId>http-vertx</artifactId>
+  <groupId>multi-maven-test-repo-with-errors</groupId>
+  <artifactId>multimodule-project-with-errors</artifactId>
   <version>1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
-  <name>Vert.x - HTTP</name>
-  <description>Exposes an HTTP API using Vert.x</description>
+  <name>multimodule-project-with-errors</name>
+  <description>multimodule porject with errors</description>
+
+
+	<modules>
+		<module>maven-multimodule-project-test-with-errors-module-1</module>
+		<module>maven-multimodule-project-test-with-errors-module-2</module>
+		<module>maven-multimodule-project-test-with-errors-module-3</module>
+	</modules>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
