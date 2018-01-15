@@ -12,8 +12,6 @@ package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,17 +22,6 @@ import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginR
 public class EnableFabric8AnalyticsTests {
 
 	private static final Logger log = Logger.getLogger(EnableFabric8AnalyticsTests.class);
-
-	@BeforeClass
-	public static void prepare() {
-
-	}
-
-	@AfterClass
-	public static void clean() {
-		// new ProjectExplorer().deleteAllProjects(false);
-		// WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-	}
 
 	@Test
 	public void enableFabric8AnalyticsButtonTest() {

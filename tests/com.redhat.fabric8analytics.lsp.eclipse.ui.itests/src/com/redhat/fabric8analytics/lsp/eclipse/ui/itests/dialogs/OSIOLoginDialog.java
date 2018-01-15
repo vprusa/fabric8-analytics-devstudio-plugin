@@ -11,6 +11,7 @@
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -24,7 +25,7 @@ import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 
 public class OSIOLoginDialog {
 	// https://github.com/jbosstools/jbosstools-openshift/blob/master/itests/org.jboss.tools.openshift.ui.bot.test/src/org/jboss/tools/openshift/ui/bot/test/integration/openshift/io/GetOpenShiftIOTokenTest.java
-	
+
 	protected static final String CONTEXT_MENU_ITEM_TEXT = "Exit"; // TODO change
 
 	protected DefaultShell browser;
@@ -39,10 +40,11 @@ public class OSIOLoginDialog {
 	public static OSIOLoginDialog openLoginDialog() {
 		return new OSIOLoginDialog();
 	}
-	
+
 	public void waitWhileLoading(String text) {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new BrowserContainsText(text), TimePeriod.LONG);
+		// new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		// ^^ commented because recent Central lags
+		new WaitUntil(new BrowserContainsText(text), TimePeriod.VERY_LONG);
 	}
 
 	public void login() {
@@ -53,10 +55,11 @@ public class OSIOLoginDialog {
 		switch (System.getProperty("OSLoginProvider")) {
 		case "JBossDeveloper":
 			internalBrowser.execute("document.getElementById(\"social-jbossdeveloper\").click()");
+			// did not find out any better solution then sleep because of superfast reloading of page before JS click() redirect to new url
+			AbstractWait.sleep(TimePeriod.SHORT);
 			log.info("Waiting for JBossDeveloper portal");
-			internalBrowser = new InternalBrowser(browser);
 			waitWhileLoading("JBoss<strong>Developer</strong>");
-			
+
 			internalBrowser.execute(String.format("document.getElementById(\"username\").value=\"%s\"",
 					System.getProperty("OSusername")));
 			internalBrowser.execute(String.format("document.getElementById(\"password\").value=\"%s\"",
@@ -66,12 +69,12 @@ public class OSIOLoginDialog {
 
 			break;
 		default:
-			// internalBrowser.execute(String.format("document.getElementById(\"username\").value=\"%s\"",
-			// DatastoreOS3.OPENSHIFT_IO_USERNAME));
-			// internalBrowser.execute(String.format("document.getElementById(\"password\").value=\"%s\"",
-			// DatastoreOS3.OPENSHIFT_IO_PASSWORD));
-			// internalBrowser.execute(
-			// "document.getElementById(\"password\").parentElement.parentElement.parentElement.submit()");
+			internalBrowser.execute(String.format("document.getElementById(\"username\").value=\"%s\"",
+					System.getProperty("OSusername")));
+			internalBrowser.execute(String.format("document.getElementById(\"password\").value=\"%s\"",
+					System.getProperty("OSpassword")));
+			internalBrowser.execute(
+					"document.getElementById(\"password\").parentElement.parentElement.parentElement.submit()");
 
 		}
 

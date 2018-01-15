@@ -15,7 +15,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
-@Suite.SuiteClasses({ StackAnalysesContextMenuItemTests.class })
+@Suite.SuiteClasses({ StackAnalysesContextMenuItemTests.class, Fabric8AnalysisTabTests.class,
+		EnableFabric8AnalyticsTests.class })
 public class SmokeSuite {
 
 }
