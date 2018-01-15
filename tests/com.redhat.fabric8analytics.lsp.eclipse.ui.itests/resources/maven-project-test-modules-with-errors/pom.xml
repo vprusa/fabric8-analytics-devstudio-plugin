@@ -23,19 +23,18 @@
     <artifactId>jboss-parent</artifactId>
     <version>21</version>
   </parent>
-  <groupId>multi-maven-test-repo-with-errors</groupId>
-  <artifactId>multimodule-project-with-errors</artifactId>
+  <groupId>maven-project-test-modules-with-errors</groupId>
+  <artifactId>maven-project-test-modules-with-errors</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>multimodule-project-with-errors</name>
-  <description>multimodule porject with errors</description>
+  <name>maven-project-test-modules-with-errors</name>
+  <description>maven-project-test-modules-with-errors</description>
 
 
 	<modules>
-		<module>maven-multimodule-project-test-with-errors-module-1</module>
-		<module>maven-multimodule-project-test-with-errors-module-2</module>
-		<module>maven-multimodule-project-test-with-errors-module-3</module>
+		<module>module-1</module>
+		<module>module-2</module>
 	</modules>
 
 
