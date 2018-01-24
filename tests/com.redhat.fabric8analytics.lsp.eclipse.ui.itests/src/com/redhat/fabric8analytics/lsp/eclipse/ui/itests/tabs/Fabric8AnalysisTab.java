@@ -23,7 +23,7 @@ import org.junit.Assert;
 
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs.OSIOLoginDialog;
 
-public class Fabric8Analysis {
+public class Fabric8AnalysisTab {
 
 	protected static final String LABEL = "Fabric8 Analysis";
 	protected static final String HEADER_TEXT_REGEX = ".*Click Generate Analyses Report to Proceed.*";
@@ -31,7 +31,7 @@ public class Fabric8Analysis {
 
 	private static final Logger log = Logger.getLogger(OSIOLoginDialog.class);
 
-	Fabric8Analysis() {
+	Fabric8AnalysisTab() {
 		log.info("Searching for label: " + LABEL);
 		new DefaultCTabItem(LABEL).activate();
 		// new DefaultShell(new RegexMatcher(HEADER_TEXT_REGEX));
@@ -40,8 +40,8 @@ public class Fabric8Analysis {
 		Assert.assertTrue("Button '" + GENERATE_STACK_REPORT_BUTTON_TEXT + "' has to be visible", new PushButton(GENERATE_STACK_REPORT_BUTTON_TEXT).isVisible());//click();
 	}
 
-	public static Fabric8Analysis openTab() {
-		return new Fabric8Analysis();
+	public static Fabric8AnalysisTab openTab() {
+		return new Fabric8AnalysisTab();
 	}
 
 }

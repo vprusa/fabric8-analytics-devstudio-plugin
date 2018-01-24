@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginRequirement.OSIOLogin;
-import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs.Fabric8Analysis;
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs.Fabric8AnalysisTab;
 
 @RunWith(RedDeerSuite.class)
 @OSIOLogin
@@ -30,7 +30,7 @@ public class Fabric8AnalysisTabTests extends StackAnalysesTestProjectBase {
 	public void validateFabric8AnalysisTabTest() {
 		log.info("Validating that tab can be opened for project " + getProjectName());
 		getProject(getProjectName()).getProjectItem("pom.xml").open();
-		Fabric8Analysis.openTab();
+		Fabric8AnalysisTab.openTab();
 		getProject(getProjectName()).getProjectItem("/").select();
 	}
 
