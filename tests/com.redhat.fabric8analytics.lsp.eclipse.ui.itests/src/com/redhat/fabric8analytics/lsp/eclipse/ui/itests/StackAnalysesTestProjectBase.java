@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 abstract public class StackAnalysesTestProjectBase {
 
 	protected static final String[] PROJECT_NAMES = { "maven-project-test" };
-	protected static final String CONTEXT_MENU_ITEM_TEXT = "Stack Analyses";
+	protected static final String CONTEXT_MENU_ITEM_TEXT = "Stack Analysis";
 
 	protected static final Logger log = Logger.getLogger(StackAnalysesTestProjectBase.class);
 
@@ -52,11 +52,13 @@ abstract public class StackAnalysesTestProjectBase {
 
 	@BeforeClass
 	public static void prepare() throws IOException {
+		log.info("Preparing projects");
 		importProjects(PROJECT_NAMES);
 	}
 
 	@AfterClass
 	public static void clean() {
+		log.info("Cleaning projects");
 		new ProjectExplorer().deleteAllProjects(false);
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}

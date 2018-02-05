@@ -10,21 +10,27 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.securestorage.SecureStorageRequirement.DisableSecureStorage;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs.OSIOLoginDialog;
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs.OpenshiftServicesPreferenceDialog;
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginRequirement.OSIOLogin;
 
 @RunWith(RedDeerSuite.class)
 @OSIOLogin
-public class EnableFabric8AnalyticsTests {
+public class EnableFabric8AnalyticsRequirementTest {
 
-	private static final Logger log = Logger.getLogger(EnableFabric8AnalyticsTests.class);
+	private static final Logger log = Logger.getLogger(EnableFabric8AnalyticsRequirementTest.class);
 
 	@Test
-	public void enableFabric8AnalyticsButtonTest() {
+	public void enableFabric8AnalyticsOSIOButtonTest() {
 		log.info("Just check if requirement is satisfied");
 	}
 

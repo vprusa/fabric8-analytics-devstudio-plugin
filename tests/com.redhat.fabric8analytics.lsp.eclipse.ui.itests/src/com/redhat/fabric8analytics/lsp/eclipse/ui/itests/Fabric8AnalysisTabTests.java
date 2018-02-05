@@ -10,12 +10,17 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
+import java.io.IOException;
+
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.securestorage.SecureStorageRequirement.DisableSecureStorage;
+import org.eclipse.reddeer.requirements.securestorage.SecureStorageRequirement;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,23 +31,29 @@ import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs.Fabric8AnalysisTab
 @OSIOLogin
 public class Fabric8AnalysisTabTests extends StackAnalysesTestProjectBase {
 
+	@BeforeClass
+	public static void prepare() throws IOException {
+		StackAnalysesTestProjectBase.prepare();
+	}
+	
 	@Test
 	public void validateFabric8AnalysisTabTest() {
 		log.info("Validating that tab can be opened for project " + getProjectName());
 		getProject(getProjectName()).getProjectItem("pom.xml").open();
 		Fabric8AnalysisTab.openTab();
-		getProject(getProjectName()).getProjectItem("/").select();
+		//getProject(getProjectName()).getProjectItem().select();
 	}
 
 	@AfterClass
 	public static void clean() {
-		// new ProjectExplorer().getProject(PROJECT_NAMES[0]).delete(false);
+		log.info("Cleaning projects");
+		
 		try {
 			new ProjectExplorer().deleteAllProjects(false);
 		} catch (EclipseLayerException | CoreLayerException e) {
-			// idk why but deletion is successfull
+			// idk why but deletion is successful
 			// e.printStackTrace();
-			log.info("Exception occured and ignored");
+			log.info("Exception EclipseLayerException or CoreLayerException occured and ignored");
 		}
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
