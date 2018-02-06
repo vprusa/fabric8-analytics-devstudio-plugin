@@ -10,7 +10,10 @@
  ******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs;
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.core.reference.ReferencedComposite;
 import org.eclipse.reddeer.jface.preference.PreferenceDialog;
@@ -26,6 +29,8 @@ public class OpenshiftServicesPreferenceDialog extends WorkbenchMenuPreferencesD
 	public static String CHECKBOX_LABEL = "Fabric8 Analytics LSP Server";
 	public RegexMatcher CHECKBOX_LABEL_REGEX = new RegexMatcher(".*" + CHECKBOX_LABEL + ".*");
 
+	private OSIOLoginDialog loginDialog = null;
+
 	public OpenshiftServicesPreferenceDialog() {
 		super(new WithTextMatcher(new RegexMatcher("Preferences.*")));
 	}
@@ -33,12 +38,24 @@ public class OpenshiftServicesPreferenceDialog extends WorkbenchMenuPreferencesD
 	public OSIOLoginDialog enableFabric8AnalyticsLSPServer() {
 		CheckBox enablef8analytics = new CheckBox(CHECKBOX_LABEL);
 		enablef8analytics.click();
-		OSIOLoginDialog loginDialog = new OSIOLoginDialog();
+		if (loginDialog == null)
+			loginDialog = new OSIOLoginDialog();
 		try {
 			loginDialog.login();
 		} catch (Exception e) {
-			// 
+			// retry
 			e.printStackTrace();
+			
+			if(!loginDialog.catch404()) {
+				log.info("Something went wrong but it was not '404 page not found'");
+			}
+				
+			assertTrue("Maximum number of OS Login attempts occured, failing - enableFabric8AnalyticsLSPServer",
+					loginDialog.getAttempts() != loginDialog.MAX_ATTEMPTS);
+			
+			//loginDialog.close();
+			disableFabric8AnalyticsLSPServer();
+			return enableFabric8AnalyticsLSPServer();
 		}
 		return loginDialog;
 	}

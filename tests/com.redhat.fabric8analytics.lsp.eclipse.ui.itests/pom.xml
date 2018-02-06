@@ -19,6 +19,8 @@
 		<!-- <OSusername>${OSusername}</OSusername>
 		<OSpassword>${OSpassword}</OSpassword>
 		<OSLoginProvider>${OSLoginProvider}</OSLoginProvider> -->
+		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/core/${stream_jbt}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${stream_jbt}/</jbosstools-tests-site>
 	</properties>
 
 	<dependencies>
@@ -75,4 +77,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+		<repositories>
+		<repository>
+			<id>jbosstools</id>
+			<layout>p2</layout>
+			<url>${jbosstools-site}</url>
+		</repository>
+		<repository>
+			<id>jbosstools-tests</id>
+			<layout>p2</layout>
+			<url>${jbosstools-tests-site}</url>
+		</repository>
+</repositories>
 </project>

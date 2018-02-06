@@ -51,7 +51,7 @@ public class Fabric8AnalysisTabTests extends StackAnalysesTestProjectBase {
 		try {
 			new ProjectExplorer().deleteAllProjects(false);
 		} catch (EclipseLayerException | CoreLayerException e) {
-			// idk why but deletion is successful
+			// idk why this error happens but deletion is successful
 			// e.printStackTrace();
 			log.info("Exception EclipseLayerException or CoreLayerException occured and ignored");
 		}

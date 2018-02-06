@@ -35,12 +35,12 @@ abstract public class StackAnalysesTestProjectBase {
 	public static void importProjects(String[] projectNames) throws IOException {
 		for (String projectName : projectNames) {
 			importProject(projectName);
-		}
+		}	
 	}
 
 	public static void importProject(String projectName) throws IOException {
 		log.info("Import " + projectName);
-		String path = "resources/" + projectName;
+		String path = "target/classes/" + projectName;
 		MavenImportWizard importDialog = new MavenImportWizard();
 		importDialog.open();
 		MavenImportWizardPage importPage = new MavenImportWizardPage(importDialog);

@@ -60,6 +60,7 @@ public class EnableFabric8AnalyticsLSPServerTests {
 		
 		osServices.disableFabric8AnalyticsLSPServer();
 		osServices.ok();
+		//TODO add check that LSP server is disabled
 		OSIOLoginRequirement.removeAccountFromOpenShiftIOPreferencePage();
 	}
 

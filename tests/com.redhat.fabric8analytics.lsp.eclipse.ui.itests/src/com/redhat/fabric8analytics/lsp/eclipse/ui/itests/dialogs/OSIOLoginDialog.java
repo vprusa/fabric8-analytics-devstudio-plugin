@@ -18,9 +18,11 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.jface.window.AbstractWindow;
 import org.eclipse.reddeer.jface.window.Openable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
@@ -40,12 +42,21 @@ public class OSIOLoginDialog extends AbstractWindow {
 
 	private static final Logger log = Logger.getLogger(OSIOLoginDialog.class);
 
-	private static int attempts = 0;
-	private static int MAX_ATTEMPTS = 5;
-	
+	private int attempts = 0;
+	public static int MAX_ATTEMPTS = 5;
+
 	public OSIOLoginDialog() {
 	}
 
+	public void clearAttempts() {
+		attempts = 0;
+	}
+
+	public int getAttempts() {
+		return attempts;
+	}
+
+	
 	public static OSIOLoginDialog openAndLogin() {
 		OSIOLoginDialog old = new OSIOLoginDialog();
 		old.open();
@@ -54,18 +65,53 @@ public class OSIOLoginDialog extends AbstractWindow {
 	}
 
 	public void waitWhileLoading(String text) {
-		//new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		// new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		// ^^ commented because recent Central lags
-		//new WaitUntil(new BrowserContainsText(text, false), TimePeriod.VERY_LONG);
-		new WaitUntil(new BrowserContainsText(text), TimePeriod.VERY_LONG);
+		new WaitUntil(new BrowserContainsText(text, false), TimePeriod.VERY_LONG);
+		// new WaitUntil(new BrowserContainsText(text), TimePeriod.VERY_LONG);
+	}
+	
+	public void close() {
+		if(browser == null)
+			return;
+		//browser.close();
+		new CancelButton().click();
+		try {
+			// deprecated
+			new DefaultShell("OpenShift.io");
+			new OkButton().click();
+			new OkButton().click();
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		} catch (Exception e) {
+			// skip
+		}
 	}
 
-	public void login() {
+	public boolean catch404() {
+		try {
+			//DefaultShell browserTmp = new DefaultShell();
+			InternalBrowser internalBrowser = new InternalBrowser(browser);
+			new WaitUntil(new BrowserContainsText("404 page not found"), TimePeriod.SHORT);
+			log.info("Something went wrong at URL: " + internalBrowser.getURL());
+			// internalBrowser.getSWTWidget().getShell().close();
+			close();
+			//return login();
+			return true;
+		} catch (CoreLayerException e) {
+			// skip
+		} catch (Exception e) {
+			// skip
+		}
+		return false;
+	}
+
+	public boolean login() {
 		attempts++;
 		log.info("Openshift login attempt: " + attempts);
 		assertTrue("Maximum number of OS Login attempts occured, failing ", attempts != MAX_ATTEMPTS);
 		AbstractWait.sleep(TimePeriod.SHORT);
 		browser = new DefaultShell();
+
 		InternalBrowser internalBrowser = new InternalBrowser(browser);
 		waitWhileLoading("OpenShift.io Developer Preview");
 
@@ -86,7 +132,7 @@ public class OSIOLoginDialog extends AbstractWindow {
 					System.getProperty("OSpassword")));
 
 			internalBrowser.execute("document.getElementById(\"fm1\").submit.click()");
-			
+
 			break;
 		default:
 			internalBrowser.execute(String.format("document.getElementById(\"username\").value=\"%s\"",
@@ -98,17 +144,8 @@ public class OSIOLoginDialog extends AbstractWindow {
 
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		try {
-			new WaitUntil(new BrowserContainsText("404 page not found"), TimePeriod.SHORT);
-			
-			internalBrowser.getSWTWidget().getShell().close();
-			open();
-			login();
-			return;
-		} catch (Exception e) {
-			// skip
-		}
+		//if (catch404())
+		//	return false;
 		
 		try {
 			// deprecated
@@ -121,11 +158,11 @@ public class OSIOLoginDialog extends AbstractWindow {
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		OpenshiftServicesPreferencePage osserivcesPreferences = new OpenshiftServicesPreferencePage(preferences);
 		OpenshiftServicesPreferenceDialog osserivces = osserivcesPreferences.getOpenshiftServicesPreferenceDialog();
-		log.info("Fabric8Analytics checkbox is: " +
-		 osserivces.isFabric8AnalyticsLSPServerEnabled());
+		log.info("Fabric8Analytics checkbox is: " + osserivces.isFabric8AnalyticsLSPServerEnabled());
 		assertTrue("Fabric8Analytics should have been enabled in Openshift Services preferences by now but it is not",
 				osserivces.isFabric8AnalyticsLSPServerEnabled());
 		osserivces.ok();
+		return true;
 	}
 
 	@Override
@@ -133,5 +170,5 @@ public class OSIOLoginDialog extends AbstractWindow {
 		OSIOLoginDialogOpenable openable = new OSIOLoginDialogOpenable();
 		return openable;
 	}
-	
+
 }
