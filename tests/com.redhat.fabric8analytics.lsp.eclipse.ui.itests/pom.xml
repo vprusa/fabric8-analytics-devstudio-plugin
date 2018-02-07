@@ -22,15 +22,6 @@
 		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${stream_jbt}/</jbosstools-tests-site>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<!-- <artifactId>test-framework</artifactId> -->
-			<version>3.4.3-SNAPSHOT</version>
-			<groupId>org.jboss.tools.openshift</groupId>
-			<artifactId>org.jboss.tools.openshift.reddeer</artifactId>
-		</dependency>
-	</dependencies>
-
 	<profiles>
 		<profile>
 			<id>SmokeSuite</id>
