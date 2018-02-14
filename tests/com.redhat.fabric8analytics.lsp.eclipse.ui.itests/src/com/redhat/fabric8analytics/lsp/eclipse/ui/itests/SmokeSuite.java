@@ -17,13 +17,13 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
-		StackAnalysesContextMenuItemTests.class,
+		//StackAnalysesContextMenuItemTests.class,
 
 		EnableFabric8AnalyticsRequirementTest.class,
 
-		EnableFabric8AnalyticsLSPServerTests.class,
+		//EnableFabric8AnalyticsLSPServerTests.class,
 
-		Fabric8AnalysisTabTests.class
+		//Fabric8AnalysisTabTests.class
 
 })
 public class SmokeSuite {
