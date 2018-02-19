@@ -11,14 +11,8 @@
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs;
 
 import org.eclipse.reddeer.common.logging.Logger;
-import org.eclipse.reddeer.common.matcher.RegexMatcher;
-import org.eclipse.reddeer.common.wait.TimePeriod;
-import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.core.condition.WidgetIsFound;
-import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.eclipse.swt.custom.CTabItem;
 import org.junit.Assert;
 
 
@@ -36,8 +30,19 @@ public class Fabric8AnalysisTab {
 		Assert.assertTrue("Button '" + GENERATE_STACK_REPORT_BUTTON_TEXT + "' has to be visible", new PushButton(GENERATE_STACK_REPORT_BUTTON_TEXT).isVisible());//click();
 	}
 
+	/**
+	 * Opens Fabric8 Analysis tab in already opened pom.xml
+	 * */
 	public static Fabric8AnalysisTab openTab() {
 		return new Fabric8AnalysisTab();
+	}
+	
+	public void generateStackReport() {
+		new PushButton(GENERATE_STACK_REPORT_BUTTON_TEXT).click();	
+	}
+	
+	public void close() {
+		new DefaultCTabItem(LABEL).close();
 	}
 
 }

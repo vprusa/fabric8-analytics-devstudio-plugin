@@ -13,7 +13,6 @@ package com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.logging.Logger;
-import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
@@ -21,15 +20,13 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.jface.window.AbstractWindow;
 import org.eclipse.reddeer.jface.window.Openable;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.button.CancelButton;
-import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
-import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
-import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 
@@ -56,11 +53,24 @@ public class OSIOLoginDialog extends AbstractWindow {
 		return attempts;
 	}
 
-	
 	public static OSIOLoginDialog openAndLogin() {
 		OSIOLoginDialog old = new OSIOLoginDialog();
 		old.open();
-		old.login();
+		try {
+			// it may happen that osio aready have token and browser just opens and closes
+			// then Preferences page Openshift Services is opened
+			old.login();
+			return old;
+		} catch (Exception e) {
+			// skip
+			// e.printStackTrace();
+			log.info("Opensfhit.io login failed but is ignored");
+		}
+
+		// it may happen that osio aready have token and browser just opens and closes
+		// then Preferences page Openshift Services is opened
+		closePreferences(TimePeriod.MEDIUM);
+
 		return old;
 	}
 
@@ -70,11 +80,11 @@ public class OSIOLoginDialog extends AbstractWindow {
 		new WaitUntil(new BrowserContainsText(text, false), TimePeriod.VERY_LONG);
 		// new WaitUntil(new BrowserContainsText(text), TimePeriod.VERY_LONG);
 	}
-	
+
 	public void close() {
-		if(browser == null)
+		if (browser == null)
 			return;
-		//browser.close();
+		// browser.close();
 		new CancelButton().click();
 		try {
 			// deprecated
@@ -84,18 +94,19 @@ public class OSIOLoginDialog extends AbstractWindow {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		} catch (Exception e) {
 			// skip
+			log.info("Confirm prompt Openshift.io failed and is ignored");
 		}
 	}
 
 	public boolean catch404() {
 		try {
-			//DefaultShell browserTmp = new DefaultShell();
+			// DefaultShell browserTmp = new DefaultShell();
 			InternalBrowser internalBrowser = new InternalBrowser(browser);
 			new WaitUntil(new BrowserContainsText("404 page not found"), TimePeriod.SHORT);
 			log.info("Something went wrong at URL: " + internalBrowser.getURL());
 			// internalBrowser.getSWTWidget().getShell().close();
 			close();
-			//return login();
+			// return login();
 			return true;
 		} catch (CoreLayerException e) {
 			// skip
@@ -144,9 +155,9 @@ public class OSIOLoginDialog extends AbstractWindow {
 
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		//if (catch404())
-		//	return false;
-		
+		// if (catch404())
+		// return false;
+
 		try {
 			// deprecated
 			new DefaultShell("OpenShift.io");
@@ -154,15 +165,33 @@ public class OSIOLoginDialog extends AbstractWindow {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		} catch (Exception e) {
 			// skip
+			log.info("Confirm prompt Openshift.io failed and is ignored");
 		}
-		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
-		OpenshiftServicesPreferencePage osserivcesPreferences = new OpenshiftServicesPreferencePage(preferences);
-		OpenshiftServicesPreferenceDialog osserivces = osserivcesPreferences.getOpenshiftServicesPreferenceDialog();
-		log.info("Fabric8Analytics checkbox is: " + osserivces.isFabric8AnalyticsLSPServerEnabled());
-		assertTrue("Fabric8Analytics should have been enabled in Openshift Services preferences by now but it is not",
-				osserivces.isFabric8AnalyticsLSPServerEnabled());
-		osserivces.ok();
+		closePreferences(TimePeriod.LONG);
 		return true;
+	}
+
+	public static void closePreferences(TimePeriod wait) {
+		try {
+			// TODO clear, commented were not sufficient enough to cover possible all cases
+			// new WaitWhile(new JobIsRunning(), wait);
+			// new WaitUntil(new ShellIsAvailable("Preferences"), wait);
+			// new WaitUntil(new ShellIsAvailable("Openshift Services"), wait);
+			// new WaitUntil(new ShellIsAvailable(new RegexMatcher(".*Openshift
+			// Services.*"), new RegexMatcher(".*Preferences.*")), wait);
+			// new WaitUntil(new ControlIsEnabled(new FinishButton()), wait);
+			new WaitUntil(new ControlIsEnabled(new PushButton("Apply")), wait);
+			WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+			OpenshiftServicesPreferencePage osserivcesPreferences = new OpenshiftServicesPreferencePage(preferences);
+			OpenshiftServicesPreferenceDialog osserivces = osserivcesPreferences.getOpenshiftServicesPreferenceDialog();
+			log.info("Fabric8Analytics checkbox is: " + osserivces.isFabric8AnalyticsLSPServerEnabled());
+			assertTrue(
+					"Fabric8Analytics should have been enabled in Openshift Services preferences by now but it is not",
+					osserivces.isFabric8AnalyticsLSPServerEnabled());
+			osserivces.ok();
+		} catch (Exception e) {
+			log.info("Closing preferences failed but is ignored");
+		}
 	}
 
 	@Override

@@ -10,52 +10,24 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
-import java.io.IOException;
-
-import org.eclipse.reddeer.core.exception.CoreLayerException;
-import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
-import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.reddeer.requirements.securestorage.SecureStorageRequirement.DisableSecureStorage;
-import org.eclipse.reddeer.requirements.securestorage.SecureStorageRequirement;
-import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.ImportProjectsRequirements.ImportProjects;
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginRequirement.OSIOLogin;
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs.Fabric8AnalysisTab;
 
 @RunWith(RedDeerSuite.class)
 @OSIOLogin
+@ImportProjects
 public class Fabric8AnalysisTabTests extends StackAnalysesTestProjectBase {
 
-	@BeforeClass
-	public static void prepare() throws IOException {
-		StackAnalysesTestProjectBase.prepare();
-	}
-	
 	@Test
 	public void validateFabric8AnalysisTabTest() {
 		log.info("Validating that tab can be opened for project " + getProjectName());
 		getProject(getProjectName()).getProjectItem("pom.xml").open();
 		Fabric8AnalysisTab.openTab();
-		//getProject(getProjectName()).getProjectItem().select();
-	}
-
-	@AfterClass
-	public static void clean() {
-		log.info("Cleaning projects");
-		
-		try {
-			new ProjectExplorer().deleteAllProjects(false);
-		} catch (EclipseLayerException | CoreLayerException e) {
-			// idk why this error happens but deletion is successful
-			// e.printStackTrace();
-			log.info("Exception EclipseLayerException or CoreLayerException occured and ignored");
-		}
-		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 }

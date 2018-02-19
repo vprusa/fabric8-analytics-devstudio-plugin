@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests.dialogs;
 
-import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.jface.window.Openable;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;

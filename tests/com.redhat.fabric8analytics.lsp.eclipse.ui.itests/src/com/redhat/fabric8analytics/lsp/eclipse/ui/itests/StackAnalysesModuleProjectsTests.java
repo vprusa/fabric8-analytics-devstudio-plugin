@@ -14,20 +14,20 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(RedDeerSuite.class)
-public class StackAnalysesModuleProjectsTests extends StackAnalysesTestProjectBase {
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.ImportProjectsRequirements.ImportProjects;
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginRequirement.OSIOLogin;
 
-	protected static final String[] PROJECT_NAMES = { "maven-project-test-modules" };
+@RunWith(RedDeerSuite.class)
+@OSIOLogin
+@ImportProjects(projectsNames={"maven-project-test-modules"})
+public class StackAnalysesModuleProjectsTests extends StackAnalysesTestProjectBase {
 
 	@Test
 	public void runAnalysesForMainProjectTest() {
 		log.info("Validate that project with modules is imported, stack analyses is running and has propper results");
-		runStackAnalyses(PROJECT_NAMES[0], "/");
-		validateResultsForMainProject();
-	}
-
-	public void validateResultsForMainProject() {
-		// TODO fail if not matches
+		runStackAnalyses("maven-project-test-modules", "/");
+		validateResults("/maven-project-test-modules/pom.xml", "/maven-project-test-modules/module-1/pom.xml",
+				"/maven-project-test-modules/module-2/pom.xml");
 	}
 
 	@Test
@@ -36,11 +36,7 @@ public class StackAnalysesModuleProjectsTests extends StackAnalysesTestProjectBa
 				"Validate that project with modules is imported, stack analyses is running and has propper results for module-1");
 		// project module name is 'maven-project-test-modules-module-1'
 		runStackAnalyses("maven-project-test-modules-module-1", "/");
-		validateResultsForModule1();
-	}
-
-	public void validateResultsForModule1() {
-		// TODO fail if not matches
+		validateResults("/maven-project-test-modules-module-1/pom.xml");
 	}
 
 	@Test
@@ -49,11 +45,7 @@ public class StackAnalysesModuleProjectsTests extends StackAnalysesTestProjectBa
 				"Validate that project with modules is imported, stack analyses is running and has propper results for module-2");
 		// project module name is 'maven-project-test-modules-module-2'
 		runStackAnalyses("maven-project-test-modules-module-2", "/");
-		validateResultsForModule2();
+		validateResults("/maven-project-test-modules-module-2/pom.xml");
 	}
-
-	public void validateResultsForModule2() {
-		// TODO fail if not matches
-	}
-
+	
 }

@@ -19,11 +19,16 @@ import org.junit.runners.Suite;
 
 		StackAnalysesContextMenuItemTests.class,
 
-		EnableFabric8AnalyticsRequirementTest.class,
-
+		//needs to be first because possible caching of osio token
 		EnableFabric8AnalyticsLSPServerTests.class,
+	
+		EnableFabric8AnalyticsRequirementTest.class,
+		
+		Fabric8AnalysisTabTests.class,
 
-		Fabric8AnalysisTabTests.class
+		StackAnalysesModuleProjectsTests.class,
+
+		Fabric8AnalysisModuleTabWithErrorsTests.class
 
 })
 public class SmokeSuite {

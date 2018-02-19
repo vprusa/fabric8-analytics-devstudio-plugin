@@ -10,22 +10,27 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
-import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.ImportProjectsRequirements.ImportProjects;
 import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.requirements.OSIOLoginRequirement.OSIOLogin;
+import com.redhat.fabric8analytics.lsp.eclipse.ui.itests.tabs.Fabric8AnalysisTab;
 
 @RunWith(RedDeerSuite.class)
 @OSIOLogin
-public class EnableFabric8AnalyticsRequirementTest {
-
-	private static final Logger log = Logger.getLogger(EnableFabric8AnalyticsRequirementTest.class);
+@ImportProjects(projectsNames = { "maven-project-test-modules-with-errors" })
+public class Fabric8AnalysisModuleTabWithErrorsTests extends StackAnalysesTestProjectBase {
 
 	@Test
-	public void enableFabric8AnalyticsOSIOButtonTest() {
-		log.info("Just check if requirement is satisfied");
+	public void validateFabric8AnalysisTabTest() {
+		log.info("Validating that tab can be opened for project " + getProjectName());
+		getProject(getProjectName()).getProjectItem("pom.xml").open();
+		Fabric8AnalysisTab fat = Fabric8AnalysisTab.openTab();
+		fat.generateStackReport();
+		validateResults("/maven-project-test-modules-with-errors/pom.xml", "commons-collections:commons-collections",
+				"ch.qos.logback:logback-core", "CVE-2015-6420", "CVE-2017-5929");
 	}
 
 }

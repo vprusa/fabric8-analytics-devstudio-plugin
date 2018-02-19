@@ -57,6 +57,7 @@ public class OSIOLoginRequirement extends AbstractRequirement<OSIOLogin> {
 	@Override
 	public void cleanUp() {
 		removeAccountFromOpenShiftIOPreferencePage();
+		OSIOLoginDialog.closePreferences(TimePeriod.SHORT);
 	}
 
 	// https://github.com/jbosstools/jbosstools-openshift/blob/master/itests/org.jboss.tools.openshift.ui.bot.test/src/org/jboss/tools/openshift/ui/bot/test/integration/openshift/io/GetOpenShiftIOTokenTest.java
