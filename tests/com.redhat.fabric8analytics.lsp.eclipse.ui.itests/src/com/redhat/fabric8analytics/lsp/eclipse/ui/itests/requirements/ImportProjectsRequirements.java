@@ -19,12 +19,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizardPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.requirement.AbstractRequirement;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 
@@ -82,6 +85,7 @@ public class ImportProjectsRequirements extends AbstractRequirement<ImportProjec
 		}
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		EditorHandler.getInstance().closeAll(false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	public static void importProject(String projectName) throws IOException {
