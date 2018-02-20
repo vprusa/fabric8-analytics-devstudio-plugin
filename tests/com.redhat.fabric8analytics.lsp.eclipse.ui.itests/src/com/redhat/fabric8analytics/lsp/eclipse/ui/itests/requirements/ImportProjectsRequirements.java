@@ -18,6 +18,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -85,6 +86,19 @@ public class ImportProjectsRequirements extends AbstractRequirement<ImportProjec
 		}
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		EditorHandler.getInstance().closeAll(false);
+		try {
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		} catch (Exception e) {
+			String jobDescription = "Initialize Language Servers for pom.xml";
+			log.info("Job '" + jobDescription + "' may be still running, lets try kill it");
+			Job[] jobs = Job.getJobManager().find(null);
+			for (Job job : jobs) {
+				if (job.getName().matches(jobDescription)) {
+					log.info("Stopping job " + jobDescription);
+					job.cancel();
+				}
+			}
+		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
