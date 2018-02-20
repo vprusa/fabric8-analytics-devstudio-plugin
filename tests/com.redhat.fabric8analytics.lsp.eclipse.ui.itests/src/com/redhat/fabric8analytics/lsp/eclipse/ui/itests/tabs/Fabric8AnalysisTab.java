@@ -41,8 +41,5 @@ public class Fabric8AnalysisTab {
 		new PushButton(GENERATE_STACK_REPORT_BUTTON_TEXT).click();	
 	}
 	
-	public void close() {
-		new DefaultCTabItem(LABEL).close();
-	}
 
 }

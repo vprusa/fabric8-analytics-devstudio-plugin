@@ -63,7 +63,7 @@ public class OSIOLoginRequirement extends AbstractRequirement<OSIOLogin> {
 
 	// https://github.com/jbosstools/jbosstools-openshift/blob/master/itests/org.jboss.tools.openshift.ui.bot.test/src/org/jboss/tools/openshift/ui/bot/test/integration/openshift/io/GetOpenShiftIOTokenTest.java
 	public static void removeAccountFromOpenShiftIOPreferencePage() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
 		preferences.open();
 		OpenShifIOPreferencePage page = new OpenShifIOPreferencePage(preferences);

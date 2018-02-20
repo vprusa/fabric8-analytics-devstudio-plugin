@@ -10,7 +10,11 @@
  *******************************************************************************/
 package com.redhat.fabric8analytics.lsp.eclipse.ui.itests;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,7 +30,12 @@ public class Fabric8AnalysisTabTests extends StackAnalysesTestProjectBase {
 	@Test
 	public void validateFabric8AnalysisTabTest() {
 		log.info("Validating that tab can be opened for project " + getProjectName());
-		getProject(getProjectName()).getProjectItem("pom.xml").open();
+		ProjectItem pi = getProject(getProjectName()).getProjectItem("pom.xml");
+		//TODO pi.open(); was not waiting long enough for Language server to initialize 
+		pi.select();
+		pi.getTreeItem().doubleClick();
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+
 		Fabric8AnalysisTab.openTab();
 	}
 
