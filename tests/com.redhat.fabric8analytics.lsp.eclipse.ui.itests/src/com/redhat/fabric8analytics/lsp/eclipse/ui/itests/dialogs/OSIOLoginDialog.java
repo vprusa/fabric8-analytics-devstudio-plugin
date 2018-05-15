@@ -124,8 +124,12 @@ public class OSIOLoginDialog extends AbstractWindow {
 		browser = new DefaultShell();
 
 		InternalBrowser internalBrowser = new InternalBrowser(browser);
-		waitWhileLoading("OpenShift.io Developer Preview");
-
+		try {
+			//waitWhileLoading("OpenShift.io Beta");
+			waitWhileLoading("Email address or other Red Hat Login ID");
+		}catch(Exception e) {
+			log.info("Waiting for page to laod was not successful, trying continue anyway");		
+		}
 		// by account provider
 		String provider = System.getProperty("OSLoginProvider") == null ? "" : System.getProperty("OSLoginProvider");
 		switch (provider) {
